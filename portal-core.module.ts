@@ -1,10 +1,7 @@
 import { NgModule, Optional, SkipSelf, ModuleWithProviders } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
-
-
-
+//import { HttpClientModule } from '@angular/common/http';
+//import { FormsModule } from '@angular/forms';
+//import { BrowserModule } from '@angular/platform-browser';
 
 // Services
 import { LayerHandlerService } from './service/cswrecords/layer-handler.service';
@@ -26,8 +23,6 @@ import { OlWWWService } from './service/www/ol-www.service';
 import { QueryWMSService} from './service/wms/query-wms.service';
 import { QueryWFSService} from './service/wfs/query-wfs.service';
 
-
-
 // Directives
 import { ImgLoadingDirective } from './uiutilities/imgloading.directive';
 import { StopPropagationDirective } from './utility/utilities.directives';
@@ -39,13 +34,15 @@ import { SelectMapBoundingComponent } from './widget/selectmap.bounding';
     StopPropagationDirective,
     SelectMapBoundingComponent
   ],
+  /*
   imports: [
     HttpClientModule,
     BrowserModule,
     FormsModule
   ],
+  */
   exports: [ImgLoadingDirective, StopPropagationDirective,
-    HttpClientModule, BrowserModule, FormsModule, SelectMapBoundingComponent],
+    /*HttpClientModule, BrowserModule, FormsModule, */SelectMapBoundingComponent],
   providers: [LayerHandlerService,
     OlWMSService,
     OlMapObject,
@@ -68,7 +65,19 @@ import { SelectMapBoundingComponent } from './widget/selectmap.bounding';
 
 export class PortalCoreModule {
 
-static forRoot(env: any, conf: any): ModuleWithProviders<PortalCoreModule> {
+  static forRoot(env: any, conf: any): ModuleWithProviders<PortalCoreModule> {
+    return {
+      ngModule: PortalCoreModule,
+      providers: [
+        OlClipboardService,
+        OlMapService,
+        {provide: 'env', useValue: env},
+        {provide: 'conf', useValue: conf}
+      ],
+    };
+  }
+  
+  static forChild(env: any, conf: any): ModuleWithProviders<PortalCoreModule> {
     return {
       ngModule: PortalCoreModule,
       providers: [
@@ -80,13 +89,13 @@ static forRoot(env: any, conf: any): ModuleWithProviders<PortalCoreModule> {
     };
   }
 
+  /*
   constructor (@Optional() @SkipSelf() parentModule: PortalCoreModule) {
     if (parentModule) {
       throw new Error(
         'CoreModule is already loaded. Import it in the AppModule only');
     }
   }
-
-
+  */
 
 }
